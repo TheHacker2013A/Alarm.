@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alarm Clock</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        #clock {
+            font-size: 2em;
+            color: #333;
+        }
+
+        #alarmTime {
+            margin-top: 20px;
+        }
+
+        #setAlarmBtn {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        button {
+            
+    border: blue solid 1px;
+    background-color: blue;
+    border-radius: 10px;
+    color: white;
+}
+
+input {
+    border: solid darkblue 2px;
+    border-radius: 5px;
+}
+
+.all {
+    border: solid 3px #111;
+    border-radius: 20px;
+    width: max-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 170px;
+}
+
+.suu {
+    padding: 30px;
+}
+
+
+
+
+
+    </style>
+</head>
+<body>
+
+<div class="all">
+
+    <div class="suu">
+
+    <h1>Alarm Clock</h1>
+    <div id="clock"></div>
+    <div id="alarmTime">
+        <input type="time" id="alarmInput">
+        <button id="setAlarmBtn" onclick="setAlarm()">Set Alarm</button>
+    </div>
+
+    </div>
+
+    </div>
+
+    <audio id="alarmSound"  src="alarm.mp3"></audio>
+
+    <script>
+
+
+let alarmTimeInput = document.getElementById("alarmInput");
+let alarmSound = document.getElementById("alarmSound");
+
+function updateClock() {
+    let now = new Date();
+    let hours = now.getHours().toString().padStart(2, '0');
+    let minutes = now.getMinutes().toString().padStart(2, '0');
+    let seconds = now.getSeconds().toString().padStart(2, '0');
+
+    document.getElementById("clock").innerHTML = `${hours}:${minutes}:${seconds}`;
+
+    let currentAlarmTime = `${hours}:${minutes}`;
+    let setAlarmBtn = document.getElementById("setAlarmBtn");
+    setAlarmBtn.disabled = (alarmTimeInput.value === currentAlarmTime);
+}
+
+function setAlarm() {
+    let currentAlarmTime = alarmTimeInput.value;
+    let currentTime = new Date();
+    let alarmTime = new Date(currentTime.toDateString() + ' ' + currentAlarmTime);
+
+    let timeUntilAlarm = alarmTime - currentTime;
+
+    if (alarmTime <= currentTime) {
+      alert("Please set a future time for the alarm.");
+      return;
+   }
+
+    setTimeout(function () {
+        playAlarmSound();
+    }, timeUntilAlarm);
+}
+
+function playAlarmSound() {
+    alarmSound.play();
+}
+
+setInterval(updateClock, 1000);
+updateClock(); // Initial call to display the clock
+
+    </script>
+
+    
+
+
+
+
+
+</body>
+</html>
